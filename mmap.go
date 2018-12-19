@@ -8,27 +8,28 @@ import (
 	"sync"
 )
 
-type mmap struct {
+// Mmap is a concurrent-safe map[interface{}]interface{}.
+type Mmap struct {
 	m map[interface{}]interface{}
 	sync.RWMutex
 }
 
-// New returns a pointer to newly created instance of mmap.
-func New() *mmap {
-	m := new(mmap)
+// New returns a pointer to newly created instance of Mmap.
+func New() *Mmap {
+	m := new(Mmap)
 	m.m = make(map[interface{}]interface{})
 	return m
 }
 
 // Set assigns value to specified key.
-func (m *mmap) Set(key interface{}, value interface{}) {
+func (m *Mmap) Set(key interface{}, value interface{}) {
 	m.Lock()
 	m.m[key] = value
 	m.Unlock()
 }
 
 // Get returns value assigned to key.
-func (m *mmap) Get(key interface{}) interface{} {
+func (m *Mmap) Get(key interface{}) interface{} {
 	m.Lock()
 	value, _ := m.m[key]
 	m.Unlock()
@@ -36,22 +37,22 @@ func (m *mmap) Get(key interface{}) interface{} {
 }
 
 // Has returns true if key exists in map. False otherwise.
-func (m *mmap) Has(key interface{}) bool {
+func (m *Mmap) Has(key interface{}) bool {
 	m.Lock()
 	_, ok := m.m[key]
 	m.Unlock()
 	return ok
 }
 
-// Remove key with its value from map.
-func (m *mmap) Remove(key interface{}) {
+// Remove deletes key with its value from map.
+func (m *Mmap) Remove(key interface{}) {
 	m.Lock()
 	delete(m.m, key)
 	m.Unlock()
 }
 
 // Count returns total number of keys in map.
-func (m *mmap) Count() int {
+func (m *Mmap) Count() int {
 	m.Lock()
 	count := len(m.m)
 	m.Unlock()
@@ -59,7 +60,7 @@ func (m *mmap) Count() int {
 }
 
 // Items returns a slice of values.
-func (m *mmap) Items() []interface{} {
+func (m *Mmap) Items() []interface{} {
 	values := make([]interface{}, 0)
 
 	m.Lock()
@@ -72,7 +73,7 @@ func (m *mmap) Items() []interface{} {
 }
 
 // Iterate takes a function as an argument and executes it in loop over map.
-func (m *mmap) Iterate(f func(key interface{}, value interface{})) {
+func (m *Mmap) Iterate(f func(key interface{}, value interface{})) {
 	m.Lock()
 	for key, value := range m.m {
 		f(key, value)

@@ -9,7 +9,7 @@ import (
 
 const count = 1000
 
-var m *mmap
+var m *Mmap
 
 func doInLoop(f func(i int, key string, value string)) {
 	wg := new(sync.WaitGroup)
