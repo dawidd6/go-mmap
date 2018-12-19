@@ -1,5 +1,7 @@
 # mmap
 
+[![GoDoc](https://godoc.org/github.com/dawidd6/mmap?status.svg)](https://godoc.org/github.com/dawidd6/mmap)
+
 Package mmap implements a concurrent-safe map.
 
 Simply the basic operations on maps but guarded with RWMutex.
