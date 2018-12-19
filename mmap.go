@@ -1,3 +1,7 @@
+// Package mmap implements a concurrent-safe map.
+//
+// Simply the basic operations on maps but guarded with RWMutex.
+
 package mmap
 
 import (
@@ -9,18 +13,21 @@ type mmap struct {
 	sync.RWMutex
 }
 
+// New returns a pointer to newly created instance of mmap.
 func New() *mmap {
 	m := new(mmap)
 	m.m = make(map[interface{}]interface{})
 	return m
 }
 
+// Set assigns value to specified key.
 func (m *mmap) Set(key interface{}, value interface{}) {
 	m.Lock()
 	m.m[key] = value
 	m.Unlock()
 }
 
+// Get returns value assigned to key.
 func (m *mmap) Get(key interface{}) interface{} {
 	m.Lock()
 	value, _ := m.m[key]
@@ -28,6 +35,7 @@ func (m *mmap) Get(key interface{}) interface{} {
 	return value
 }
 
+// Has returns true if key exists in map. False otherwise.
 func (m *mmap) Has(key interface{}) bool {
 	m.Lock()
 	_, ok := m.m[key]
@@ -35,12 +43,14 @@ func (m *mmap) Has(key interface{}) bool {
 	return ok
 }
 
+// Remove key with its value from map.
 func (m *mmap) Remove(key interface{}) {
 	m.Lock()
 	delete(m.m, key)
 	m.Unlock()
 }
 
+// Count returns total number of keys in map.
 func (m *mmap) Count() int {
 	m.Lock()
 	count := len(m.m)
@@ -48,6 +58,7 @@ func (m *mmap) Count() int {
 	return count
 }
 
+// Items returns a slice of values.
 func (m *mmap) Items() []interface{} {
 	values := make([]interface{}, 0)
 
@@ -60,6 +71,7 @@ func (m *mmap) Items() []interface{} {
 	return values
 }
 
+// Iterate takes a function as an argument and executes it in loop over map.
 func (m *mmap) Iterate(f func(key interface{}, value interface{})) {
 	m.Lock()
 	for key, value := range m.m {
