@@ -1,5 +1,6 @@
 # mmap
 
+[![Build Status](https://api.cirrus-ci.com/github/dawidd6/mmap.svg)](https://cirrus-ci.com/github/dawidd6/mmap)
 [![GoDoc](https://godoc.org/github.com/dawidd6/mmap?status.svg)](https://godoc.org/github.com/dawidd6/mmap)
 
 Package mmap implements a concurrent-safe map.
