@@ -14,7 +14,7 @@ package main
 
 import (
     "fmt"
-    "mmap"
+    "github.com/dawidd6/go-mmap"
 )
 
 func main() {
